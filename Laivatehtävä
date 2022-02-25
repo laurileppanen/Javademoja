@@ -1,0 +1,212 @@
+package EkatDemot;
+
+public class tehtava1 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Laiva paatti = new Laiva("VikingLine", 107.2, 13.2, 30.2);
+		Rahtilaiva vak = new Rahtilaiva("VAK", 100.6, 21.0, 30, 4000, 0);
+		Autolautta Nauvo = new Autolautta("Haver�", 35.4, 2.5, 10, 500, 50, 10); 
+		
+		System.out.println(vak.getNopeusSolmuina());
+		System.out.println(paatti.matkanKesto(1500));
+		vak.lisaaRahtia(2000);
+		System.out.println(vak.getRahti());
+		System.out.println(vak.getNopeusSolmuina());
+		vak.poistaRahtia(2100);
+		System.out.println(vak.getNopeusSolmuina());
+		
+		System.out.println("");
+		
+		System.out.println(Nauvo.getLaivanNimi());
+		Nauvo.lisaaKuormaa(1, 1);
+		System.out.println(Nauvo.getAjoneuvoMaara());
+		Nauvo.poistaKuormaa(1, 5);
+		System.out.println(Nauvo.getAjoneuvoMaara());
+		
+		
+	} 
+}
+
+class Laiva {
+	protected String LaivanNimi;
+	protected double LaivanPituus;
+	protected double LaivanSyv�ys;
+	protected double NopeusSolmuina;
+	
+	public Laiva(String LaivanNimi, double LaivanPituus, double LaivanSyv�ys, double NopeusSolmuina) {
+		this.LaivanNimi = LaivanNimi;
+		this.LaivanPituus = LaivanPituus;
+		this.LaivanSyv�ys = LaivanSyv�ys;
+		this.NopeusSolmuina = NopeusSolmuina;
+	}
+	
+	public String getLaivanNimi() {
+        return LaivanNimi;
+    }
+
+	public double getLaivanPituus() {
+        return LaivanPituus;
+    }
+	
+    public double getLaivanSyv�ys() {
+        return LaivanSyv�ys;
+    }
+
+	
+    public double getNopeusSolmuina() {
+        return NopeusSolmuina;
+    }
+    
+    public String matkanKesto(double matkaKilometreina) {
+    	// muunnetaan solmut kilometreiksi tunnissa ja sekunnissa
+    	double kilometreinaTunnissa = this.NopeusSolmuina*1.852;
+    	double kilometreinaSekunnissa = kilometreinaTunnissa/3600;
+    	
+    	// Lasketaan tunnit
+        double tunnit = matkaKilometreina / kilometreinaTunnissa;
+        int uudetTunnit = 0;
+        double uudetTunnit2 = 0.0;
+        for (int i=1; i<tunnit; i++) {
+        	uudetTunnit++;
+        	uudetTunnit2++;
+        }
+        
+        //Lasketaan minuutit
+        double minuutit = (tunnit - uudetTunnit2) * 60;
+        int uudetMinuutit = 0;
+        double uudetMinuutit2 = 0.0;
+        for (int i=1; i<minuutit; i++) {
+        	uudetMinuutit++;
+        	uudetMinuutit2++;
+        }
+        
+        //Lasketaan sekunnit
+        double sekunnit = (minuutit - uudetMinuutit2) * 60;
+        int uudetSekunnit = 0;
+        for (int i=1; i<sekunnit; i++) {
+        	uudetSekunnit++;
+        }
+        
+        return "Matkan kesto: " + uudetTunnit + "h " + uudetMinuutit + "min " + uudetSekunnit + "s";
+    
+    	
+    	
+    }
+
+}
+
+class Rahtilaiva extends Laiva {
+	private double Kapasiteetti;
+	private double Rahti;
+	
+	public Rahtilaiva(String LaivanNimi, double LaivanPituus, double LaivanSyv�ys, double NopeusSolmuina, double kapasiteetti, double rahti) {
+		super(LaivanNimi,LaivanPituus,LaivanSyv�ys, NopeusSolmuina);
+		this.Rahti = rahti;
+		this.Kapasiteetti = kapasiteetti;
+	}
+	
+	public double getRahti() {
+		return this.Rahti;
+	}
+	
+	
+	public double getNopeusSolmuina() {
+		// Lasketaan rahdin ja kapasiteetin suhde
+		// Miinustetaan t�m� yhdest�, joka kerrotaan nopeudella, jolloin saadaan uusi nopeus.
+		double suhde = 1 - (Rahti / Kapasiteetti);
+		double UusiNopeusSolmuina = suhde * NopeusSolmuina;
+		return UusiNopeusSolmuina;
+	}
+	
+	public void lisaaRahtia(double Lisarahti) {
+		// T�m� metodi palauttaa nopeuden
+		if (Lisarahti + Rahti <= Kapasiteetti) {
+			this.Rahti = Lisarahti + Rahti;
+			
+		}
+		
+		else {
+			System.out.println("Kapasiteetti ylitetty!!!");
+			this.Rahti = Lisarahti + Rahti;
+		}
+	}
+	
+	public void poistaRahtia(double rahtiaPois) {
+		// T�m� metodi palauttaa nopeuden
+		if (Rahti - rahtiaPois >= 0) {
+			this.Rahti = Rahti - rahtiaPois;
+			
+		}
+		
+		else {
+			System.out.println("Kapasiteetti on nolla!!!");
+			this.Rahti = 0;
+		}
+	}
+	
+}
+
+class Autolautta extends Laiva {
+	final int kapasiteetti;
+	int matkustajamaara;
+	int ajoneuvomaara;
+	
+	public Autolautta(String LaivanNimi, double LaivanPituus, double LaivanSyv�ys, double NopeusSolmuina, final int kapasiteetti, int matkustajamaara, int ajoneuvomaara) {
+		super(LaivanNimi, LaivanPituus, LaivanSyv�ys, NopeusSolmuina);
+		this.kapasiteetti = kapasiteetti;
+		this.matkustajamaara = matkustajamaara;
+		this.ajoneuvomaara = ajoneuvomaara;
+	}
+	
+	public int getMatkustajaMaara() {
+		if (matkustajamaara + ajoneuvomaara*10 <= kapasiteetti) {
+			return matkustajamaara;
+		}
+		
+		else {
+			return -1;
+		}
+	}
+	
+	public int getAjoneuvoMaara() {
+		if (matkustajamaara + ajoneuvomaara*10 <= kapasiteetti) {
+			return ajoneuvomaara;
+		}
+		
+		else {
+			return -1;
+		}
+	}
+	
+	public void lisaaKuormaa(int matkustajat, int ajoneuvot) {
+		if (matkustajat + ajoneuvot*10 + matkustajamaara + ajoneuvomaara*10 >= kapasiteetti) {
+			System.out.println("Lautta on t�ynn�");
+			
+		}
+		
+		else {
+			matkustajamaara += matkustajat;
+			ajoneuvomaara += ajoneuvot;
+		}
+	}
+	
+	public void poistaKuormaa(int matkustajat, int ajoneuvot) {
+		if ((matkustajamaara + ajoneuvomaara*10) - (matkustajat + ajoneuvot*10) <= 0) {
+			System.out.println("Lautta on tyhj�");
+			
+		}
+		
+		else {
+			matkustajamaara -= matkustajat;
+			ajoneuvomaara -= ajoneuvot;
+		}
+	}
+	
+	
+}
+
+
+
+
+
