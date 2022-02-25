@@ -35,7 +35,7 @@ class paivakirja {
                     this.onkoKirjauduttu = true;
                     tulostaNakyma();
                 } else {
-                    System.out.println("Salasana on v‰‰rin");
+                    System.out.println("Salasana on v√§√§rin");
                 }
  
             } 
@@ -47,16 +47,16 @@ class paivakirja {
     private void tulostaNakyma() {
         while (true) {
  
-            System.out.println("Valitse numerolla mit‰ haluat");
-            System.out.println("1) Tee uusi merkint‰");
-            System.out.println("2) Lue p‰iv‰kirjaa alusta");
-            System.out.println("3) Etsi merkinn‰t p‰iv‰m‰‰r‰lt‰");
+            System.out.println("Valitse numerolla mit√§ haluat");
+            System.out.println("1) Tee uusi merkint√§");
+            System.out.println("2) Lue p√§iv√§kirjaa alusta");
+            System.out.println("3) Etsi merkinn√§t p√§iv√§m√§√§r√§lt√§");
             System.out.println("4) Kirjaudu ulos");
             try {
                 int valinta = Integer.parseInt(lukija.nextLine());
                 
             } catch (NumberFormatException e) {
-                System.err.println("Syˆt‰ numero!");
+                System.err.println("Sy√∂t√§ numero!");
             }
         }
  
